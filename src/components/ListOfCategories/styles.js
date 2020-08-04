@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { fadeIn } from '../../styles/animation'
 
 const List = styled.ul`
   display: flex;
@@ -10,6 +11,7 @@ const List = styled.ul`
   }
 
   &.fixed {
+    ${fadeIn({time: '.3s'})};
     background: #fff;
     border-radius: 60px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
