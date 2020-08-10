@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
-const GET_PHOTOS = gql`
-  query getPhotos ($categoryId: ID) {
-    photos (categoryId: $categoryId) {
+const GET_SINGLE_PHOTO = gql`
+  query getSinglePhoto ($id: ID!) {
+    photo (id: $id) {
       id
       categoryId
       src
@@ -13,10 +13,10 @@ const GET_PHOTOS = gql`
     }
   }
 `
-export const useGetPhotos = categoryId => {
-  const { data, loading, error } = useQuery(GET_PHOTOS, {
+export const useGetSinglePhoto = id => {
+  const { data, loading, error } = useQuery(GET_SINGLE_PHOTO, {
     variables: {
-      categoryId: categoryId
+      id: id
     }
   })
   return { data, loading, error }
