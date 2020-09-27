@@ -1,10 +1,11 @@
-import React from 'react'
-import Context from '../Context'
+import React, { useContext } from 'react'
+import { Context } from '../Context'
 import { UserForm } from '../components/UserForm'
 import { useRegisterMutation } from '../hooks-apollo/useRegisterMutation'
 import { useLoginMutation } from '../hooks-apollo/useLoginMutation'
 
 export const NotRegisteredUser = () => {
+  const { activateAuth } = useContext(Context)
   const { registerMutation, loading, error } = useRegisterMutation()
   const { loginMutation, loadingLogin, errorLogin } = useLoginMutation()
 
@@ -14,51 +15,44 @@ export const NotRegisteredUser = () => {
   const loginTitle = `Inicia${loadingLogin ? 'ndo sesión' : 'r sesión'}`
   const errorMsgLogin = errorLogin && 'Usuario o contraseña incorrecta.'
 
+  const onSubmitRegister = ({ email, password }) => {
+    const input = {
+      email: email.value,
+      password: password.value
+    }
+    const variables = { input }
+
+    registerMutation({ variables })
+      .then(({ data }) => {
+        const { signup } = data
+        activateAuth(signup)
+      })
+      .catch((err) => {
+        console.log('err', err)
+      })
+  }
+
+  const onSubmitLogin = ({ email, password }) => {
+    const input = {
+      email: email.value,
+      password: password.value
+    }
+    const variables = { input }
+
+    loginMutation({ variables })
+      .then(({ data }) => {
+        const { login } = data
+        activateAuth(login)
+      })
+      .catch((err) => {
+        console.log('err', err)
+      })
+  }
+
   return (
-    <Context.Consumer>
-      {
-        ({ activateAuth }) => {
-
-          const onSubmitRegister = ({ email, password }) => {
-            const input = {
-              email: email.value,
-              password: password.value
-            }
-            const variables = { input }
-
-            registerMutation({ variables })
-              .then((res) => {
-                console.log('res', res)
-                activateAuth()
-              })
-              .catch((err) => {
-                console.log('err', err)
-              })
-          }
-
-          const onSubmitLogin = ({ email, password }) => {
-            const input = {
-              email: email.value,
-              password: password.value
-            }
-            const variables = { input }
-
-            loginMutation({ variables })
-              .then((res) => {
-                console.log('res', res)
-                activateAuth()
-              })
-              .catch((err) => {
-                console.log('err', err)
-              })
-          }
-
-          return <>
-            <UserForm title={registerTitle} onSubmit={onSubmitRegister} error={errorMsg} disabled={loading} />
-            <UserForm title={loginTitle} onSubmit={onSubmitLogin} error={errorMsgLogin} disabled={loadingLogin} />
-          </>
-        }
-      }
-    </Context.Consumer>
+    <>
+      <UserForm title={registerTitle} onSubmit={onSubmitRegister} error={errorMsg} disabled={loading} />
+      <UserForm title={loginTitle} onSubmit={onSubmitLogin} error={errorMsgLogin} disabled={loadingLogin} />
+    </>
   )
 }

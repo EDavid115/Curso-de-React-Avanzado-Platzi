@@ -1,0 +1,22 @@
+{
+    // Configuraciones para integrar ESLint, prettier y vscode
+    "editor.formatOnSave": true,
+    // Colocar Off el format de JS y JSX, para poder hacerlo via Eslint
+    "[javascript]": {
+      "editor.formatOnSave": true
+    },
+    "[javascriptreact]": {
+      "editor.formatOnSave": true
+    },
+    // Esto le dice al plugin de ESLint que cualquier lint se ejecute al salvar. 
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    // Adicional, PERO MEGA IMPORTANTE... si tienes prettier como extension, debes apagarlo para js y jsx pq esto se hara a traves del eslint
+    "prettier.disableLanguages": [
+      "javascript",
+      "javascriptreact",
+      "json"
+    ],
+    // "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  }
