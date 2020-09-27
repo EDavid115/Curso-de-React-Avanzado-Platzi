@@ -3,7 +3,7 @@ import { useGetFavorites } from '../hooks-apollo/useGetFavs'
 import { ListOfFavs } from '../components/ListOfFavs'
 import { Layout } from '../components/Layout'
 
-export const Favs = () => {
+const Favs = () => {
   const { data, loading, error } = useGetFavorites()
 
   if (loading) return <p>Loading...</p>
@@ -15,3 +15,5 @@ export const Favs = () => {
     </Layout>
   )
 }
+
+export default Favs
