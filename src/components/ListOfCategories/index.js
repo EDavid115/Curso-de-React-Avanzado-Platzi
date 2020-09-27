@@ -27,13 +27,13 @@ const useCategoriesData = () => {
   return { categories, loading }
 }
 
-export const ListOfCategories = () => {
+const ListOfCategoriesComponent = () => {
   const { categories, loading } = useCategoriesData()
   const [showFixed, setShowFixed] = useState(false)
 
   useEffect(() => {
     const onScroll = e => {
-      const newShowFixed = window.scrollY > 200;
+      const newShowFixed = window.scrollY > 200
       showFixed !== newShowFixed && setShowFixed(newShowFixed)
     }
     document.addEventListener('scroll', onScroll)
@@ -44,15 +44,16 @@ export const ListOfCategories = () => {
   const renderList = (fixed) => (
     <List fixed={fixed}>
       {
-        loading ?
+        loading ? (
           <Item key='loading'>
             <Category />
           </Item>
-          : categories.map(category =>
-            <Item key={category.id}>
-              <Category {...category} path={`/pet/${category.id}`} />
-            </Item>
-          )
+
+        ) : categories.map(category =>
+          <Item key={category.id}>
+            <Category {...category} path={`/pet/${category.id}`} />
+          </Item>
+        )
       }
     </List>
   )
@@ -64,3 +65,5 @@ export const ListOfCategories = () => {
     </>
   )
 }
+
+export const ListOfCategories = React.memo(ListOfCategoriesComponent)
